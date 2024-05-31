@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: "Event"
+  profiles:
+    active: "Service"
+  config:
+    import: "optional:configserver:http://localhost:6666/"
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+
+
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 50MB
