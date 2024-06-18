@@ -95,16 +95,27 @@ public class EventCreateServiceImp implements EventCreateService {
                     eventCreate.setEventSetup(eventSetup);
                     eventCreate.setEventPerformers(data);
                     eventCreate.setEventCreator(creator);
+                    eventCreate.setDateTime(eventCreateDto.getDateTime());
                     eventCreate.setEventStatus(EventStatus.REQUEST_SEND);
                     return eventCreate;
                 })
                 .collect(Collectors.toList());
+
         List<EventCreate> savedEventCreates = eventCreateRepository.saveAll(eventCreateData);
+
+
+
 
 
         List<EventCreateDto> savedEventCreateDtos = savedEventCreates.stream()
                 .map(eventCreate -> modelMapper.map(eventCreate, EventCreateDto.class))
                 .collect(Collectors.toList());
+
+        savedEventCreates.forEach(eventCreate -> {
+            saveDate(eventCreate.getEventPerformers(), eventCreateDto.getDateTime(), eventSetup, eventCreate);
+        });
+
+
 
         savedEventCreates.forEach(eventCreateDtos -> {
             EventNotificationDto eventNotificationDto = EventNotificationDto.builder()
@@ -118,6 +129,8 @@ public class EventCreateServiceImp implements EventCreateService {
                     (eventNotificationDto);
 
         });
+
+
 
         return savedEventCreateDtos;
     }
@@ -137,6 +150,18 @@ public class EventCreateServiceImp implements EventCreateService {
                 .map(data -> userProfileRepository.findById(UUID.fromString(data)).orElse(null))
                 .collect(Collectors.toList());
     }
+
+
+    private void saveDate(UserProfile profession, LocalDate date, EventSetup eventSetup, EventCreate event) {
+        ProfessionsDateAndTime professionsDateAndTime = ProfessionsDateAndTime.builder()
+                .dateTime(date)
+                .userProfile(profession)
+                .eventCreate(event)
+                .eventSetup(eventSetup)
+                .build();
+        professionsDateAndTimeRepository.save(professionsDateAndTime);
+    }
+
 
 
 
@@ -227,16 +252,23 @@ public class EventCreateServiceImp implements EventCreateService {
 
     @Override
     public List<String> getUserProfile(DataDto localDateTime) {
-        List<ProfessionsDateAndTime> listOfUsers=professionsDateAndTimeRepository.findByDateTime(localDateTime.getLocalDate());
+        List<ProfessionsDateAndTime> listOfUsers = professionsDateAndTimeRepository.findByDateTime(localDateTime.getLocalDate());
+        System.out.println(localDateTime+"----------");
 
         return listOfUsers.stream()
+                .filter(user -> user != null && localDateTime.getLocalDate().equals(user.getDateTime()))
+                .peek(user -> System.out.println("Filtered user: " + user))
                 .map(ProfessionsDateAndTime::getUserProfile)
                 .filter(Objects::nonNull)
+                .peek(userProfile -> System.out.println("User profile: " + userProfile))
                 .map(userProfile -> userProfile.getId().toString())
                 .distinct()
-                .toList();
-
+                .peek(id -> System.out.println("User profile ID: " + id))
+                .collect(Collectors.toList());
     }
+
+
+
 
     @Override
     public  Boolean isEventCreate (String setupId) {

@@ -7,12 +7,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
+@ToString
 public class SetUpTheEvent extends BaseEntity {
 
     private String eventName;
@@ -23,6 +26,7 @@ public class SetUpTheEvent extends BaseEntity {
     private String priceOfPremiumTicket;
     private Double locationLatitude;
     private Double locationLongitude;
+    private LocalDate date;
 
     @ManyToOne
     private UserProfile creatorId;

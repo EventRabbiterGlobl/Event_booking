@@ -3,7 +3,9 @@ package com.event_create_and_bokking_service.event_create_and_bokking_service.us
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +19,6 @@ public class EventCreateDto {
 
     List<String> id;
     private String eventCreator;
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
 
 }
