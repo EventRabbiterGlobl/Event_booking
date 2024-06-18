@@ -15,6 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Builder
+@ToString
 public class TicketBookingPayment extends BaseEntity {
 
 

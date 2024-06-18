@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -33,17 +32,16 @@ public class CloudinaryServiceImp implements CloudinaryService {
     }
 
     @Override
-    public Map<String, Object> uploadVideo(MultipartFile file, String folder) {
+    public Map uploadVideo(MultipartFile file, String folder) {
         try {
-            Map<String, Object> options = ObjectUtils.asMap(
+            Map options = ObjectUtils.asMap(
                     "folder", folder,
                     "resource_type", "video"
             );
-            Map<String, Object> data = cloudinary.uploader().upload(file.getBytes(), options);
+            Map data = cloudinary.uploader().upload(file.getBytes(), options);
 
 
             String videoUrl = (String) data.get("secure_url");
-            System.out.println("Video Url: " + videoUrl);
             return data;
         } catch (IOException e) {
             throw new RuntimeException("Video uploading failed !");

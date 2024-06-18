@@ -5,6 +5,7 @@ import com.event_create_and_bokking_service.event_create_and_bokking_service.bas
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,10 +25,13 @@ public class EventCreate extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
-    private LocalDateTime dateTime;
+
+    private LocalDate dateTime;
 
     @ManyToOne
     private EventSetup eventSetup;
+
+
 
 
 

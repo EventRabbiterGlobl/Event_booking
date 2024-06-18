@@ -15,6 +15,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
+@ToString
+
 public class EventSetup extends BaseEntity {
     private UUID eventCreatorID;
 

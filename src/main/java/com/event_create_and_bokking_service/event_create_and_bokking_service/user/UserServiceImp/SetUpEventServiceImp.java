@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -94,6 +95,12 @@ public class SetUpEventServiceImp implements SetUpEventService {
 
     }
 
+    @Override
+    public List<SetUpTheEvent> getEventDetails(String creatorId) {
+        return setUpTheEventRepository.findByCreatorId_Id
+                (UUID.fromString(creatorId)).stream()
+                .toList();
+    }
 
 
     private BannerImage bannerImage(EventSetup eventSetup,
